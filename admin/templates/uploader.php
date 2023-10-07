@@ -3,6 +3,9 @@
         <label>Bezeichnung: <input type="text" name="title" value="" required /></label>
         <br/>
         <br/>
+        <label>Datum: <input type="date" name="date" required /></label>
+        <br/>
+        <br/>
         <label>Neues PDF hochladen: <input type="file" name="uploadfile" value="" required /></label>
         <br/>
         <br/>

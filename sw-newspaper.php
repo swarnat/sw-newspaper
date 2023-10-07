@@ -2,7 +2,7 @@
 /*
  * Plugin Name:       Newspaper Manager
  * Description:       Handles a PDF newspaper and create thumbnail as separate image
- * Version:           1.0.0
+ * Version:           1.0.1
  * Requires PHP:      7.4
  * Author:            Stefan Warnat
  * Author URI:        https://stefanwarnat.de
@@ -73,11 +73,18 @@ function sw_newspaper_admin_menu() {
 function sw_newspaper_admin_options_page() {
     if(!empty($_POST['dflip_value'])) {
         update_option('swnewspaper_dflipid', (int)$_POST['dflip_value']);
+        update_option('swnewspaper_medafolderid', (int)$_POST['mediafolder']);
     }
 
     $currentDFlipConfigId = get_option('swnewspaper_dflipid', 0);
 
     $dFlipConfigs = get_posts([ 'post_type' => 'dflip ']);
+
+    $currentMediaFolderId = get_option('swnewspaper_medafolderid', 0);
+    $mediaFolders = get_terms( array(
+        'taxonomy'   => 'wpmf-category',
+        'hide_empty' => false,
+    ) );
     
     require_once(__DIR__ . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'options.php');
 }
@@ -86,6 +93,7 @@ function sw_newspaper_admin_uploader_page() {
     if(!empty($_FILES['uploadfile'])) {
         //if(is_uploaded_file($_FILES['uploadfile']))
         $title = $_POST['title'];
+        $newspaperDate = date('Y-m-d', strtotime($_POST['date']));
 
         $currentDFlipConfigId = get_option('swnewspaper_dflipid', 0);
 
@@ -132,9 +140,6 @@ function sw_newspaper_admin_uploader_page() {
         $thumbFilename = str_replace('.pdf','.png', basename($filepath));
         
         $imageFileTmp = tempnam(sys_get_temp_dir(), 'PDF') . '.png';
-
-        ini_set('display_errors', 1);
-        error_reporting(-1);
 
         $imagick = new Imagick();
         $imagick->readImage($filepath . '[0]');
@@ -183,6 +188,7 @@ function sw_newspaper_admin_uploader_page() {
         );
 
         update_post_meta($pdfAttachmentId, '_thumbid', $thumbAttachmentId);
+        update_post_meta($pdfAttachmentId, 'date', $newspaperDate);
 
         $dFlipData = get_post_meta($currentDFlipConfigId, '_dflip_data', true);
         
@@ -190,6 +196,12 @@ function sw_newspaper_admin_uploader_page() {
         $dFlipData['pdf_thumb'] = wp_get_attachment_url($thumbAttachmentId);
 
         update_post_meta($currentDFlipConfigId, '_dflip_data', $dFlipData);
+
+        $currentMediaFolderId = get_option('swnewspaper_medafolderid', 0);
+        if(!empty($currentMediaFolderId)) {
+            wp_set_post_terms($pdfAttachmentId, [$currentMediaFolderId], 'wpmf-category');
+            wp_set_post_terms($thumbAttachmentId, [$currentMediaFolderId], 'wpmf-category');
+        }
         //var_dump($dFlipData);
         //var_dump($attachment_id);
     }
