@@ -1,0 +1,33 @@
+div.newspaper-archive {
+    column-count: 4;
+    column-gap: 25px;
+    row-gap: 25px;
+
+    -webkit-column-count: 4;
+    -webkit-column-gap:   25px;
+    -moz-column-count:    4;
+    -moz-column-gap:      25px;    
+}
+.newspaper-archive-single {
+    border:2px solid #eee;
+    padding:10px;
+    margin-bottom:25px;
+
+    transition:  border 500ms;
+    cursor:pointer;
+}
+
+.newspaper-archive-single:hover {
+    border:2px solid #777;
+}
+
+.newspaper-archive-single:hover div.newspaper-title {
+    background-color: #eee;
+}
+
+div.newspaper-title {
+    text-align:center;
+    font-size:13px;
+    margin:0 -10px -10px -10px;
+    padding:5px 0;
+}

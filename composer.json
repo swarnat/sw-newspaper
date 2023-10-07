@@ -1,0 +1,8 @@
+{
+    "name" : "stefanwarnat/sw-newspaper",
+    "description": "Newspaper Management Plugin",
+    "type": "wordpress-plugin",
+    "require" : {
+      "php": ">=7.4"
+    }
+  }
