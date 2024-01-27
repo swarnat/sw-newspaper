@@ -2,12 +2,14 @@
 /*
  * Plugin Name:       Newspaper Manager
  * Description:       Handles a PDF newspaper and create thumbnail as separate image
- * Version:           1.0.1
+ * Version:           1.1.0
  * Requires PHP:      7.4
  * Author:            Stefan Warnat
  * Author URI:        https://stefanwarnat.de
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:       sw-newspaper  
+ * Domain Path:       /languages
  */
 
  /** Step 2 (from text above). */
@@ -57,11 +59,17 @@ function sw_newspaper_current_download($atts = array()) {
 
 /** Step 1. */
 function sw_newspaper_admin_menu() {
-	add_options_page( 'Newspaper Options', 'Newspaper Options', 'manage_options', 'sw-newspaper-manager', 'sw_newspaper_admin_options_page' );
+	add_options_page( 
+        __( 'Newspaper Options', 'sw-newspaper' ), 
+        __( 'Newspaper Options', 'sw-newspaper' ), 
+        'manage_options', 
+        'sw-newspaper-manager', 
+        'sw_newspaper_admin_options_page' 
+    );
 
 	add_menu_page(
 		__( 'Newspaper Options', 'sw-newspaper' ),
-		'Newspaper',
+		__( 'Newspaper', 'sw-newspaper' ),
 		'manage_options',
 		'sw-newspaper/upload.php',
 		'sw_newspaper_admin_uploader_page',
@@ -202,8 +210,7 @@ function sw_newspaper_admin_uploader_page() {
             wp_set_post_terms($pdfAttachmentId, [$currentMediaFolderId], 'wpmf-category');
             wp_set_post_terms($thumbAttachmentId, [$currentMediaFolderId], 'wpmf-category');
         }
-        //var_dump($dFlipData);
-        //var_dump($attachment_id);
     }
+    
     require_once(__DIR__ . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'uploader.php');
 }
