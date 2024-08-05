@@ -8,6 +8,7 @@
  * Author URI:        https://stefanwarnat.de
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * GitHub Plugin URI: https://github.com/swarnat/sw-newspaper 
  * Text Domain:       sw-newspaper  
  * Domain Path:       /languages
  */
