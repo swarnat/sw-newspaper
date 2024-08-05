@@ -7,6 +7,7 @@ div.newspaper-archive {
     -webkit-column-gap:   25px;
     -moz-column-count:    4;
     -moz-column-gap:      25px;    
+
 }
 .newspaper-archive-single {
     border:2px solid #eee;
@@ -15,6 +16,17 @@ div.newspaper-archive {
 
     transition:  border 500ms;
     cursor:pointer;
+    text-align:center;
+
+    -webkit-column-break-inside: avoid;
+    -o-column-break-inside: avoid;
+    -moz-column-break-inside: avoid;
+    break-inside: avoid;    
+
+}
+.newspaper-archive-single img {
+    max-height:400px;
+    max-width:100%;
 }
 
 .newspaper-archive-single:hover {
@@ -30,4 +42,7 @@ div.newspaper-title {
     font-size:13px;
     margin:0 -10px -10px -10px;
     padding:5px 0;
+}
+div.newspaper-single ._df_thumb.df-element {
+    width:100%;
 }
