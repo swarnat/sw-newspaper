@@ -17,15 +17,31 @@ add_action( 'admin_menu', 'sw_newspaper_admin_menu' );
 
 add_shortcode('newspaper_download', 'sw_newspaper_current_download');
 add_shortcode('newspaper_archive', 'sw_newspaper_archive');
+add_shortcode('newspaper_single', 'sw_newspaper_single');
 
 wp_register_style( 'swnewspaper-style', plugins_url( 'css/stylesheet.css', __FILE__ ) );
 
+function sw_newspaper_single($atts = array()) {
+    wp_enqueue_style( 'swnewspaper-style' );
+
+    $currentDFlipConfigId = get_option('swnewspaper_dflipid', 0);
+
+    if(empty($atts["width"])) $atts["width"] = 200;
+
+    $html = '<div class="newspaper-single" style="width:'.intval($atts["width"]).'px;">';
+    $html .= do_shortcode('[dflip id="'.$currentDFlipConfigId.'" type="thumb" ][/dflip]');
+    $html .= '</div>';
+
+    return $html;
+    
+}
 function sw_newspaper_archive($atts = array()) {
     $newspapers = get_posts( array(
         'post_type' => 'attachment',
         'meta_key'   => '_newspaper',
         'meta_value' => '1',
     ) );
+
 
     $columns = $atts['columns'] ?? 4;
 
@@ -81,7 +97,7 @@ function sw_newspaper_admin_menu() {
 function sw_newspaper_admin_options_page() {
     if(!empty($_POST['dflip_value'])) {
         update_option('swnewspaper_dflipid', (int)$_POST['dflip_value']);
-        update_option('swnewspaper_medafolderid', (int)$_POST['mediafolder']);
+        update_option('swnewspaper_medafolderid', !empty($_POST['mediafolder']) ? (int)$_POST['mediafolder'] : 0);
     }
 
     $currentDFlipConfigId = get_option('swnewspaper_dflipid', 0);
@@ -93,7 +109,7 @@ function sw_newspaper_admin_options_page() {
         'taxonomy'   => 'wpmf-category',
         'hide_empty' => false,
     ) );
-    
+
     require_once(__DIR__ . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'options.php');
 }
 
